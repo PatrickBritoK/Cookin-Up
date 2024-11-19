@@ -1,18 +1,22 @@
 <script lang="ts">
-import type IReceita from '@/interfaces/IReceitas';
-import type { PropType } from 'vue';
+import type IReceita from "@/interfaces/IReceitas";
+import type { PropType } from "vue";
 
 export default {
   props: {
-    receita: { type: Object as PropType<IReceita>, required: true }
-  }
-}
+    receita: { type: Object as PropType<IReceita>, required: true },
+  },
+};
 </script>
 
 <template>
   <article class="receita">
     <header class="receita__cabecalho">
-      <img class="receita__imagem" :src="`/imagens/receitas/${receita.imagem}`" :alt="`Foto de ${receita.nome}`">
+      <img
+        class="receita__imagem"
+        :src="`/imagens/receitas/${receita.imagem}`"
+        :alt="`Foto de ${receita.nome}`"
+      />
     </header>
 
     <section class="receita__corpo">
@@ -33,7 +37,7 @@ export default {
   transition: 0.2s;
 
   border-radius: 1rem;
-  background: var(--Branco, #FFF);
+  background: var(--Branco, #fff);
   box-shadow: 4px 4px 12px 0px rgba(68, 68, 68, 0.08);
 }
 

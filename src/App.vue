@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import Banner from './components/Banner.vue';
-import ConteudoPrincipal from './components/ConteudoPrincipal.vue';
-import Rodape from './components/Rodape.vue';
-
-// export default {
-//   components: { Banner }
-// }
+import Banner from "./components/Banner.vue";
+import ConteudoPrincipal from "./components/ConteudoPrincipal.vue";
+import Rodape from "./components/Rodape.vue";
 </script>
 
 <template>
@@ -14,6 +10,4 @@ import Rodape from './components/Rodape.vue';
   <Rodape />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
