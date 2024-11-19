@@ -1,41 +1,76 @@
+<!-- Options API -->
 <script lang="ts">
-import SelecionarIngredientes from './SelecionarIngredientes.vue';
+import MostrarReceitas from "./MostrarReceitas.vue";
+import SelecionarIngredientes from "./SelecionarIngredientes.vue";
+import SuaLista from "./SuaLista.vue";
+
+type Pagina = "SelecionarIngredientes" | "MostrarReceitas";
 
 export default {
   data() {
     return {
-      ingredientes: ["Alho", "Manteiga", "Orégano"],
+      ingredientes: [] as string[],
+      conteudo: "SelecionarIngredientes" as Pagina,
     };
   },
-  components: { SelecionarIngredientes }
+  components: { SuaLista, SelecionarIngredientes, MostrarReceitas },
+  methods: {
+    adicionarIngrediente(ingrediente: string) {
+      this.ingredientes.push(ingrediente);
+    },
+    removerIngrediente(ingrediente: string) {
+      this.ingredientes = this.ingredientes.filter(
+        (listaIngredientes) => ingrediente !== listaIngredientes
+      );
+    },
+    navegar(pagina: Pagina) {
+      this.conteudo = pagina;
+    },
+  },
 };
 </script>
 
+<!-- Composition API -->
+<!-- <script lang="ts">
+export default {
+  setup() {
+    const ingredientes = ref<string[]>([]);
+
+    function adicionarIngrediente(ingrediente: string) {
+      ingredientes.value.push(ingrediente)
+    }
+    function removerIngrediente(ingrediente: string) {
+      ingredientes.value = ingredientes.value.filter(iLista => ingrediente !== iLista);
+    }
+
+    return {
+      ingredientes,
+      adicionarIngrediente,
+      removerIngrediente
+    }
+  },
+  components: { SelecionarIngredientes, SuaLista },
+}
+</script> -->
+
 <template>
   <main class="conteudo-principal">
-    <section>
-      <span class="subtitulo-lg sua-lista-texto"> Sua lista: </span>
+    <SuaLista :ingredientes="ingredientes" />
 
-      <ul v-if="ingredientes.length" class="ingredientes-sua-lista">
-        <li
-          v-for="ingrediente in ingredientes"
-          :key="ingrediente"
-          class="ingrediente"
-        >
-          {{ ingrediente }}
-        </li>
-      </ul>
+    <KeepAlive include="SelecionarIngredientes">
+      <SelecionarIngredientes
+        v-if="conteudo === 'SelecionarIngredientes'"
+        @adicionar-ingrediente="adicionarIngrediente"
+        @remover-ingrediente="removerIngrediente"
+        @buscar-receitas="navegar('MostrarReceitas')"
+      />
 
-      <p v-else class="paragrafo lista-vazia">
-        <img
-          src="../assets/imagens/icones/lista-vazia.svg"
-          alt="Ícone de pesquisa"
-        />
-        Sua lista está vazia, selecione ingredientes para iniciar.
-      </p>
-    </section>
-
-    <SelecionarIngredientes />
+      <MostrarReceitas
+        v-else-if="conteudo === 'MostrarReceitas'"
+        :ingredientes="ingredientes"
+        @editar-receitas="navegar('SelecionarIngredientes')"
+      />
+    </KeepAlive>
   </main>
 </template>
 
@@ -64,18 +99,6 @@ export default {
   justify-content: center;
   gap: 1rem 1.5rem;
   flex-wrap: wrap;
-}
-
-.ingrediente {
-  display: inline-block;
-  border-radius: 0.5rem;
-  min-width: 4.25rem;
-  padding: 0.5rem;
-  text-align: center;
-  transition: 0.2s;
-  color: var(--creme, #fffaf3);
-  background: var(--coral, #f0633c);
-  font-weight: 700;
 }
 
 .lista-vazia {
